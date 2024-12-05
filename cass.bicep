@@ -64,27 +64,32 @@ resource cassandraCluster 'Microsoft.DocumentDB/cassandraClusters@2023-04-15' = 
   name: clusterName
   location: location
   properties: {
-    delegatedManagementSubnetId: vnet.properties.subnets[0].id
+    delegatedManagementSubnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
     initialCassandraAdminPassword: initialCassandraAdminPassword
     cassandraVersion: cassandraVersion
   }
+  dependsOn: [
+    vnet
+  ]
 }
 
 resource cassandraDataCenter 'Microsoft.DocumentDB/cassandraClusters/dataCenters@2023-04-15' = {
   name: '${clusterName}/${dataCenterName}'
   location: location
   properties: {
-    delegatedSubnetId: vnet.properties.subnets[0].id
+    delegatedSubnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
     nodeCount: nodeCount
     sku: {
       name: nodeSku
     }
     diskCapacity: diskCapacity
-    availabilityZone: false
   }
+  dependsOn: [
+    cassandraCluster
+  ]
 }
 
 output vnetId string = vnet.id
-output subnetId string = vnet.properties.subnets[0].id
+output subnetId string = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
 output cassandraClusterId string = cassandraCluster.id
 output cassandraDataCenterId string = cassandraDataCenter.id
