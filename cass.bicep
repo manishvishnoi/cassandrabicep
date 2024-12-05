@@ -78,6 +78,7 @@ resource cassandraDataCenter 'Microsoft.DocumentDB/cassandraClusters/dataCenters
     nodeCount: nodeCount
     sku: nodeSku
     diskCapacity: diskCapacity
+    dataCenterLocation: location // Added this property
   }
 }
 
