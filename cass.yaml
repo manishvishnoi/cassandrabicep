@@ -1,0 +1,21 @@
+trigger:
+  branches:
+    include:
+      - main
+pool:
+  name: 'Default'
+
+jobs:
+- job: DeployNM
+  displayName: 'Deploy Cassandra'
+  steps:
+      - task: AzureCLI@2
+        displayName: 'Deploy Cassandra with Bicep'
+        inputs:
+          azureSubscription: 'axwaymanishdepops1'
+          scriptType: 'ps'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az deployment group create --resource-group RG-mavishnoi --template-file ./cass.bicep --parameters initialCassandraAdminPassword=Test555
+
+
