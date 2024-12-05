@@ -2,10 +2,10 @@
 param location string = 'swedencentral'
 
 @description('The name of the Virtual Network.')
-param vnetName string = 'Test555'
+param vnetName string = 'Test666'
 
 @description('The name of the subnet.')
-param subnetName string = 'Test555'
+param subnetName string = 'Test666'
 
 @description('The initial Cassandra admin password.')
 @secure()
@@ -15,7 +15,7 @@ param initialCassandraAdminPassword string
 param cassandraVersion string = '4.0'
 
 @description('The Cassandra cluster name.')
-param clusterName string = 'TEST555'
+param clusterName string = 'TEST666'
 
 @description('The Cassandra datacenter name.')
 param dataCenterName string = 'dc1'
