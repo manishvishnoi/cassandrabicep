@@ -1,6 +1,3 @@
-@description('The name of the resource group.')
-param resourceGroupName string = 'RG-mavishnoi'
-
 @description('The location for the resources.')
 param location string = 'swedencentral'
 
@@ -74,19 +71,14 @@ resource cassandraCluster 'Microsoft.DocumentDB/cassandraClusters@2023-04-15' = 
 }
 
 resource cassandraDataCenter 'Microsoft.DocumentDB/cassandraClusters/dataCenters@2023-04-15' = {
-  name: '${clusterName}/${dataCenterName}'
-  location: location
+  parent: cassandraCluster
+  name: dataCenterName
   properties: {
     delegatedSubnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
     nodeCount: nodeCount
-    sku: {
-      name: nodeSku
-    }
+    sku: nodeSku
     diskCapacity: diskCapacity
   }
-  dependsOn: [
-    cassandraCluster
-  ]
 }
 
 output vnetId string = vnet.id
