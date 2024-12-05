@@ -47,7 +47,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-02-01' = {
             {
               name: 'cassandraDelegation'
               properties: {
-                serviceName: 'Microsoft.CosmosDB/clusters'
+                serviceName: 'Microsoft.DocumentDB/cassandraClusters'
               }
             }
           ]
