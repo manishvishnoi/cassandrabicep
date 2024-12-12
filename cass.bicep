@@ -2,10 +2,10 @@
 param location string = 'swedencentral'
 
 @description('The name of the Virtual Network.')
-param vnetName string = 'Test666'
+param vnetName string = 'Test12Dec'
 
 @description('The name of the subnet.')
-param subnetName string = 'Test666'
+param subnetName string = 'default'
 
 @description('The initial Cassandra admin password.')
 @secure()
@@ -29,34 +29,6 @@ param nodeCount int = 3
 @description('Disk capacity in TB for each Cassandra node.')
 param diskCapacity int = 1
 
-resource vnet 'Microsoft.Network/virtualNetworks@2023-02-01' = {
-  name: vnetName
-  location: location
-  properties: {
-    addressSpace: {
-      addressPrefixes: [
-        '10.0.0.0/16'
-      ]
-    }
-    subnets: [
-      {
-        name: subnetName
-        properties: {
-          addressPrefix: '10.0.0.0/24'
-          delegations: [
-            {
-              name: 'cassandraDelegation'
-              properties: {
-                serviceName: 'Microsoft.DocumentDB/cassandraClusters'
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
-
 resource cassandraCluster 'Microsoft.DocumentDB/cassandraClusters@2023-04-15' = {
   name: clusterName
   location: location
@@ -65,9 +37,6 @@ resource cassandraCluster 'Microsoft.DocumentDB/cassandraClusters@2023-04-15' = 
     initialCassandraAdminPassword: initialCassandraAdminPassword
     cassandraVersion: cassandraVersion
   }
-  dependsOn: [
-    vnet
-  ]
 }
 
 resource cassandraDataCenter 'Microsoft.DocumentDB/cassandraClusters/dataCenters@2023-04-15' = {
@@ -82,7 +51,6 @@ resource cassandraDataCenter 'Microsoft.DocumentDB/cassandraClusters/dataCenters
   }
 }
 
-output vnetId string = vnet.id
 output subnetId string = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
 output cassandraClusterId string = cassandraCluster.id
 output cassandraDataCenterId string = cassandraDataCenter.id
